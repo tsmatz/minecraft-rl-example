@@ -1,18 +1,18 @@
 # Reinforcement Learning for Minecraft (Project Malmo) Sample
 
 This sample code trains an agent in Minecraft with reinforcement learning. (Here I used rllib.)<br>
-In this example, a maze (which path is randomized) is given and the agent will learn to reach to a goal block.
+In this example, a maze (in which, the path is randomized) is given and the agent will learn to reach to a goal block.
 
 Follow this description to run.
 
 ## 1. Setup prerequisite environment ##
 
 In this example, I assume Ubuntu 18.04. (I have run on Ubuntu in Microsoft Azure.)<br>
-You can also join into the same game with your PC client. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
+You can also join into the same game with your own Minecraft PC client. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
 
 <blockquote>
 Note : When you run on NVIDIA GPU-utilized instance to speed up, please setup drivers and libraries.<br>
-In this setup, I use TensorFlow 2.4.1. Then please install corresponding version of drivers (cuda 11.0) and libraries (cuDNN 8.0). See [here](https://www.tensorflow.org/install/source#gpu) for details about compatible drivers.
+In this setup, I use TensorFlow 2.4.1. Then please install corresponding version of drivers (cuda 11.0) and libraries (cuDNN 8.0). See https://www.tensorflow.org/install/source#gpu for details about compatible drivers.
 
 For preparation, install ```gcc``` and ```make``` tools.
 
@@ -40,7 +40,9 @@ sudo dpkg -i libcudnn8-dev_8.0.5.39-1+cuda11.0_amd64.deb
 sudo dpkg -i libcudnn8-samples_8.0.5.39-1+cuda11.0_amd64.deb
 ```
 
-Set-up is done. Make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1``` and train with ```--num_gpu``` option in the following step.
+Set-up is done.
+
+Make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1``` and train with ```--num_gpu``` option in the following step.
 </blockquote>
 
 First, make sure that Python 3 is installed on Ubuntu. (If not, please install Python 3.)
@@ -57,7 +59,7 @@ sudo apt-get -y install python3-pip
 sudo -H pip3 install --upgrade pip
 ```
 
-Install X remote desktop, and start this service.<br>
+Install X remote desktop, and start RDP service.<br>
 After this setting, restart your computer.
 
 ```
@@ -69,7 +71,7 @@ sudo apt-get install xrdp -y
 
 Allow (Open) inbound port 3389 (default RDP port) in network settings.
 
-> When you join into the same game with your client remotely, also please open port 25565, which is default Minecraft port.
+> When you join into the same game with your own Minecraft client remotely, also please open Minecraft port.
 
 Install and setup Java (JDK) as follows.
 
@@ -79,7 +81,7 @@ echo -e "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-## 2. Install ans Setuo Project Malmo ##
+## 2. Install and Setup Project Malmo ##
 
 Install Malmo binaries, which is a modded Minecraft built by [Microsoft Research](https://www.microsoft.com/en-us/research/project/project-malmo/).
 
@@ -137,9 +139,8 @@ cd MalmoPlatform/Minecraft
 
 ## 5. Train an agent (Deep Reinforcement Learning) ##
 
-Now let's start training.
-
-Make sure that Minecraft is running with malmo port 9000. (See above.)
+Now let's start training.<br>
+Before starting, make sure that Minecraft is running with malmo port 9000. (See above.)
 
 First, clone this repository.
 
@@ -156,14 +157,14 @@ python3 train.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml
 ```
 
 <blockquote>
-Note : When you run on GPU-utilized worker to speed up, specify ```--num_gpus``` option as follows.
+Note : When you run on GPU-utilized worker to speed up, specify --num_gpus option as follows.
 
 ```
 python3 train.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --num_gpus 1
 ```
 </blockquote>
 
-When you start above training code, you will see 84 x 84 Minecraft's screen running. The frame in this screen is used for the agent's learning.<br>
+When you start above training code, you will see 84 x 84 Minecraft's screen running. The frame on this screen is used for the agent's learner.<br>
 This frame size (84 x 84 x n) is supported for rllib built-in convolutional network (ConvNet), then no custom model is needed in this code. (Otherwise, please create your own model and attach this task.)<br>
 See the source code ([visionnet.py](https://github.com/ray-project/ray/blob/master/rllib/models/tf/visionnet.py)) for the built-in convnet used in this training.
 
@@ -171,7 +172,7 @@ See the source code ([visionnet.py](https://github.com/ray-project/ray/blob/mast
 
 ## 6. Run pre-trained agent
 
-This repository includes pre-trained checkpoint (```checkpoint/checkpoint-622```) and you can see the result.
+This repository includes pre-trained checkpoint (```checkpoint/checkpoint-622```) and you can see the result soon.
 
 Before running below, make sure that Minecraft is running with malmo port 9000. (See above.)
 
@@ -184,7 +185,7 @@ python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml
 If you have your own trained checkpoint, you can also run and simulate your own agent as follows.
 
 ```
-python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --checkpoint_file {your trained checkpoint file}
+python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
 ```
 
 ![Simulate a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
