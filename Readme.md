@@ -1,4 +1,4 @@
-# Reinforcement Learning in Minecraft (Project Malmo) Sample
+# Reinforcement Learning in Minecraft (Project Malmo Sample)
 
 This sample code trains an agent in Minecraft with reinforcement learning. (Here I used rllib.)<br>
 In this example, a maze (in which, the path is randomized) is given and the agent will learn to reach to a goal block.
