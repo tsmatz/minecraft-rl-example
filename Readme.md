@@ -1,14 +1,18 @@
 # Reinforcement Learning in Minecraft (Project Malmo Sample)
 
 This sample code trains an agent in Minecraft with reinforcement learning. (Here I used rllib.)<br>
-In this example, a maze (in which, the path is randomized) is given and the agent will learn to reach to a goal block.
+In this example, a maze (in which, the path is randomized) is given and the agent will learn to reach to a goal block using observed frame pixels (84 x 84 x 3 channels).
 
-Follow this description to run.
+See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for the tutorial of Project Malmo, which is a modded Minecraft built by Microsoft Research.
+
+Follow this description to run this sample.
 
 ## 1. Setup prerequisite environment ##
 
-In this example, I assume Ubuntu 18.04. (I have run on Ubuntu in Microsoft Azure.)<br>
-You can also join into the same game with your own Minecraft PC client. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
+In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have tried and run these steps on Ubuntu 18.04 in Microsoft Azure.)<br>
+You can also join into the same game with your own Minecraft PC client, if needed. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
+
+Now let's start to set up your Ubuntu environment.
 
 <blockquote>
 Note : When you run on NVIDIA GPU-utilized instance to speed up, please setup drivers and libraries.<br>
@@ -40,12 +44,12 @@ sudo dpkg -i libcudnn8-dev_8.0.5.39-1+cuda11.0_amd64.deb
 sudo dpkg -i libcudnn8-samples_8.0.5.39-1+cuda11.0_amd64.deb
 ```
 
-Set-up is done.
+Setup is done.
 
 Make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1``` and train with ```--num_gpu``` option in the following step.
 </blockquote>
 
-First, make sure that Python 3 is installed on Ubuntu. (If not, please install Python 3.)
+First, make sure that Python 3 is installed on Ubuntu. (If not, please install Python 3 on Ubuntu.)
 
 ```
 python3 -V
@@ -69,9 +73,9 @@ sudo apt-get install xrdp -y
 /etc/init.d/xrdp start  # password is required
 ```
 
-Allow (Open) inbound port 3389 (default RDP port) in network settings.
+Allow (Open) inbound port 3389 (default RDP port) in network settings to allow your client to connect.
 
-> When you join into the same game with your own Minecraft client remotely, also please open Minecraft port.
+> Note : When you want to join into the same game with your own Minecraft client remotely, please open Minecraft port too.
 
 Install and setup Java (JDK) as follows.
 
