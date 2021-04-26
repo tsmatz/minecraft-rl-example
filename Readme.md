@@ -139,7 +139,15 @@ cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-> Note : When you cannot use the monitor, see "Trouble Shooting" in the appendix below.
+If ```forgeSrc.jar``` (```forgeSrc-1.11.2-13.20.0.2228.jar```) could not be found and the error occurs, please download and use the successful cache [malmo-gradle-caches.zip](https://1drv.ms/u/s!AuopXnMb-Aqcgc9v58e-4x8hhQCFDg?e=EZtHP9).
+
+```
+mv ~/.gradle/caches ~/.gradle/caches-org
+sudo apt-get install zip unzip
+unzip malmo-gradle-caches.zip -d ~/.gradle/caches
+```
+
+> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below.
 
 ## 5. Train an agent (Deep Reinforcement Learning) ##
 
