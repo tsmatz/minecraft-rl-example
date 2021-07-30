@@ -97,19 +97,11 @@ class MalmoEnv(gym.Env):
             PLACEHOLDER_MAZESEED=self.mazeseed)
         my_mission = MalmoPython.MissionSpec(xml,True)
         # Start mission
-        loop_count = 0
-        while loop_count < 3:
-            loop_count += 1
-            try:
-                self.agent_host.startMission(my_mission,
-                    self.pool,
-                    self.my_mission_record,
-                    0,
-                    'test1')
-                loop_count = 3
-            except:
-                if loop_count == 3:
-                    raise;
+        self.agent_host.startMission(my_mission,
+            self.pool,
+            self.my_mission_record,
+            0,
+            'test1')
         # Wait till mission begins
         world_state = self.agent_host.getWorldState()
         while not world_state.has_mission_begun:
