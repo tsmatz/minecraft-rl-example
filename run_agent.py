@@ -30,7 +30,7 @@ if __name__ == "__main__":
         type=str)
     parser.add_argument('--checkpoint_file',
         required=False,
-        default="./checkpoint/checkpoint-622",
+        default="./checkpoint/checkpoint-501",
         help="trained checkpoint file path")
     parser.add_argument("--num_gpus",
         type=int,

@@ -122,10 +122,10 @@ cd MalmoPlatform/Minecraft
 Install ray framework (which is used to run a trained AI agent) with dependencies as follows.
 
 ```
-pip3 install tensorflow==2.4.1 ray==1.1.0 ray[rllib]==1.1.0 ray[tune]==1.1.0
+pip3 install tensorflow==2.4.1 ray[default]==1.6.0 ray[rllib]==1.6.0 ray[tune]==1.6.0 attrs==19.1.0 pandas
 ```
 
-> Note : When you run on GPU-utilized instance, install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```.
+> Note : When you run on GPU, install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```.
 
 ## 4. Run Minecraft with Project Malmo ##
 
@@ -139,15 +139,7 @@ cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-If ```forgeSrc.jar``` (```forgeSrc-1.11.2-13.20.0.2228.jar```) could not be found and the error occurs, please download and use the successful cache [malmo-gradle-caches.zip](https://1drv.ms/u/s!AuopXnMb-Aqcgc9v58e-4x8hhQCFDg?e=EZtHP9).
-
-```
-mv ~/.gradle/caches ~/.gradle/caches-org
-sudo apt-get install zip unzip
-unzip malmo-gradle-caches.zip -d ~/.gradle/caches
-```
-
-> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below.
+> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below. (See below if compilation fails.)
 
 ## 5. Train an agent (Deep Reinforcement Learning) ##
 
@@ -206,6 +198,16 @@ python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --chec
 **Xrdp won't accept a special character for password.**
 
 Please create a new user with a simple password.
+
+**Minecraft compilation errors**
+
+If ```forgeSrc.jar``` (```forgeSrc-1.11.2-13.20.0.2228.jar```) could not be found and the error occurs in Minecraft compilation, please download and use the successful cache [malmo-gradle-caches.zip](https://1drv.ms/u/s!AuopXnMb-Aqcgc9v58e-4x8hhQCFDg?e=EZtHP9).
+
+```
+mv ~/.gradle/caches ~/.gradle/caches-org
+sudo apt-get install zip unzip
+unzip malmo-gradle-caches.zip -d ~/.gradle/caches
+```
 
 **Error in desktop session start**
 
