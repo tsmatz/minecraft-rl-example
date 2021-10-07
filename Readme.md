@@ -149,7 +149,7 @@ Before starting, make sure that Minecraft is running with malmo port 9000. (See 
 First, clone this repository.
 
 ```
-git clone https://github.com/tsmatz/malmo-maze-sample.git
+git clone https://github.com/tsmatz/malmo-maze-sample
 cd malmo-maze-sample
 ```
 
