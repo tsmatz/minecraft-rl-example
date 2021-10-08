@@ -193,6 +193,8 @@ python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --chec
 
 ![Simulate a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
 
+After you have learned, please proceed to the scalable distributed RL with Ray cluster. (See [here](https://github.com/tsmatz/minecraft-rl-on-ray-cluster).)
+
 ## Appendix : Trouble Shooting
 
 **Xrdp won't accept a special character for password.**
