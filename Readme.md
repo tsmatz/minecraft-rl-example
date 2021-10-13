@@ -151,22 +151,22 @@ Before starting, make sure that Minecraft is running with malmo port 9000. (See 
 First, clone this repository.
 
 ```
-git clone https://github.com/tsmatz/malmo-maze-sample
-cd malmo-maze-sample
+git clone https://github.com/tsmatz/minecraft-rl-example
+cd minecraft-rl-example
 ```
 
 Run the training script (train.py) as follows.<br>
 Note that this command is not needed to be run on the monitor attached shell. (This process will connect to the running Malmo instance with port 9000.)
 
 ```
-python3 train.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml
+python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 <blockquote>
 Note : When you run on GPU-utilized worker to speed up, specify --num_gpus option as follows.
 
 ```
-python3 train.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --num_gpus 1
+python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_gpus 1
 ```
 </blockquote>
 
@@ -184,13 +184,13 @@ This repository also includes pre-trained checkpoint (```checkpoint/checkpoint-6
 After running Minecraft with malmo port 9000 (see above), run this pre-trained agent as follows.
 
 ```
-python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml
+python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 If you have your own trained checkpoint, you can also run and simulate your own agent as follows.
 
 ```
-python3 run_agent.py /YOUR_HOME_DIR/malmo-maze-sample/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
+python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
 ```
 
 ![Simulate a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
