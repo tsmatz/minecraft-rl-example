@@ -9,11 +9,11 @@ from pathlib import Path
 import random
 import time
 
-from EnvWrapper import MalmoEnv
+from maze_env import MalmoMazeEnv
 
 def create_env(config):
     xml = Path(config["mission_file"]).read_text()
-    env = MalmoEnv(
+    env = MalmoMazeEnv(
         xml=xml,
         width=config["width"],
         height=config["height"],
@@ -30,7 +30,7 @@ if __name__ == "__main__":
         type=str)
     parser.add_argument('--checkpoint_file',
         required=False,
-        default="./checkpoint/checkpoint-501",
+        default="./checkpoint/checkpoint-527",
         help="trained checkpoint file path")
     parser.add_argument("--num_gpus",
         type=int,
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         #
 
         xml = Path(args.mission_path).read_text()
-        env2 = MalmoEnv(
+        env2 = MalmoMazeEnv(
             xml=xml,
             width=800,
             height=600,

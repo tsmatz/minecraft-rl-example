@@ -15,8 +15,9 @@ You can also join into the same game with your own Minecraft PC client, if neede
 Now let's start to set up your Ubuntu environment.
 
 <blockquote>
-Note : When you run on NVIDIA GPU-utilized instance to speed up, please setup drivers and libraries.<br>
-In this setup, I use TensorFlow 2.4.1. Then please install corresponding version of drivers (cuda 11.0) and libraries (cuDNN 8.0). See https://www.tensorflow.org/install/source#gpu for details about compatible drivers.
+Note : I have run and trained the agent in GPU utilized VM (instance).<br>
+When you run on NVIDIA GPU-utilized instance to speed up, please setup drivers and libraries as follows.<br>
+In this setup, I use TensorFlow 2.4.1 and please then install corresponding version of drivers (cuda 11.0) and libraries (cuDNN 8.0). See https://www.tensorflow.org/install/source#gpu for details about compatible drivers in TensorFlow.
 
 For preparation, install ```gcc``` and ```make``` tools.
 
@@ -59,7 +60,7 @@ Install and upgrade pip3.
 
 ```
 sudo apt-get update
-sudo apt-get -y install python3-pip
+sudo apt-get install -y python3-pip
 sudo -H pip3 install --upgrade pip
 ```
 
@@ -68,8 +69,8 @@ After this setting, restart your computer.
 
 ```
 sudo apt-get update
-sudo apt-get install lxde -y
-sudo apt-get install xrdp -y
+sudo apt-get install -y lxde
+sudo apt-get install -y xrdp
 /etc/init.d/xrdp start  # password is required
 ```
 
@@ -80,7 +81,7 @@ Allow (Open) inbound port 3389 (default RDP port) in network settings to allow y
 Install and setup Java (JDK) as follows.
 
 ```
-sudo apt-get install openjdk-8-jdk
+sudo apt-get install -y openjdk-8-jdk
 echo -e "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
 source ~/.bashrc
 ```
@@ -106,7 +107,7 @@ python3 -c "import malmo.minecraftbootstrap; malmo.minecraftbootstrap.download()
 Set ```MALMO_XSD_PATH``` environment variable as follows.
 
 ```
-echo -e "export MALMO_XSD_PATH=$HOME/MalmoPlatform/Schemas" >> ~/.bashrc
+echo -e "export MALMO_XSD_PATH=$PWD/MalmoPlatform/Schemas" >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -115,6 +116,7 @@ Set the Malmo version in ```./MalmoPlatform/Minecraft/src/main/resources/version
 ```
 cd MalmoPlatform/Minecraft
 (echo -n "malmomod.version=" && cat ../VERSION) > ./src/main/resources/version.properties
+cd ../..
 ```
 
 ## 3. Install Ray and RLlib framework ##
@@ -210,6 +212,14 @@ mv ~/.gradle/caches ~/.gradle/caches-org
 sudo apt-get install zip unzip
 unzip malmo-gradle-caches.zip -d ~/.gradle/caches
 ```
+
+**Error for connecting to Minecraft client**
+
+When you have an error "Failed to find an available client for this mission" in ```startMission()```, please check as follows.
+
+- Minecraft client is correctly running
+- Not setting ```LC_ALL``` environment variable as follows (This will prevent from connecting)<br>
+```export LC_ALL=C.UTF-8```
 
 **Error in desktop session start**
 

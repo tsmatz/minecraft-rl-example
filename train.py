@@ -7,12 +7,12 @@ import os
 import ray
 import ray.tune as tune
 
-from EnvWrapper import MalmoEnv
+from maze_env import MalmoMazeEnv
 
-# For creating OpenAI gym environment (custom MalmoEnv)
+# For creating OpenAI gym environment (custom MalmoMazeEnv)
 def create_env(config):
     xml = Path(config["mission_file"]).read_text()
-    env = MalmoEnv(
+    env = MalmoMazeEnv(
         xml=xml,
         width=config["width"],
         height=config["height"],
