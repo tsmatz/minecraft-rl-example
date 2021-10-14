@@ -1,23 +1,23 @@
 # Reinforcement Learning in Minecraft (Project Malmo Example)
 
-This sample code trains an agent in Minecraft with reinforcement learning. (Here I used RLlib.)<br>
-In this example, a maze (in which, the path is randomized) is given and the agent will learn to reach to a goal block using observed frame pixels (84 x 84 x 3 channels).
+This example code trains an agent in Minecraft with reinforcement learning. (Here I have used RLlib.)<br>
+In this example, a maze (in which, the path is randomized) is given in each episode, and the agent will learn to reach to a goal block using the observed frame pixels (84 x 84 x 3 channels).
 
-See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for the tutorial of Project Malmo, which is a modded Minecraft built by Microsoft Research.
+See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for the tutorial of Project Malmo, which is built on a modded Minecraft by Microsoft Research.
 
-Follow this description to run this sample.
+This Readme provides instructions for running this example.
 
-## 1. Setup prerequisite environment ##
+## 1. Setup prerequisite software in Ubuntu ##
 
-In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have tried and run these steps on Ubuntu 18.04 in Microsoft Azure.)<br>
+In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have used Ubuntu 18.04 LTS in Microsoft Azure.)<br>
 You can also join into the same game with your own Minecraft PC client, if needed. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
 
 Now let's start to set up your Ubuntu environment.
 
 <blockquote>
 Note : I have run and trained the agent in GPU utilized VM (instance).<br>
-When you run on NVIDIA GPU-utilized instance to speed up, please setup drivers and libraries as follows.<br>
-In this setup, I use TensorFlow 2.4.1 and please then install corresponding version of drivers (cuda 11.0) and libraries (cuDNN 8.0). See https://www.tensorflow.org/install/source#gpu for details about compatible drivers in TensorFlow.
+When you run on NVIDIA GPU-utilized machine to speed up, please setup GPU drivers and libraries as follows.<br>
+I note that you should install correct version of drivers and libraries. (In this settings, we'll use CUDA version 11.0 and cuDNN versioin 8.0, since we will use TensorFlow 2.4.1. See https://www.tensorflow.org/install/source#gpu for details about compatible drivers in TensorFlow.)
 
 For preparation, install ```gcc``` and ```make``` tools.
 
@@ -27,7 +27,7 @@ sudo apt install gcc
 sudo apt-get install make
 ```
 
-Install cuda 11.0 by the following command. (After installation, make sure that cuda exists in ```/usr/local``` directory.)
+Install CUDA 11.0 by running the following command. (After installation, make sure to be installed by running ```nvidia-smi``` command.)
 
 ```
 wget http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda_11.0.2_450.51.05_linux.run
@@ -35,9 +35,7 @@ sudo sh cuda_11.0.2_450.51.05_linux.run
 ```
 
 Install cuDNN 8.0.<br>
-First, download this library (runtime, dev, and docs) from [NVIDIA developer site](https://developer.nvidia.com/cudnn).
-
-Install downloaded packages as follows.
+To install cuDNN, download the corresponding version of packages (runtime, dev, and docs) from [NVIDIA developer site](https://developer.nvidia.com/cudnn) and install these packages as follows.
 
 ```
 sudo dpkg -i libcudnn8_8.0.5.39-1+cuda11.0_amd64.deb
@@ -45,9 +43,9 @@ sudo dpkg -i libcudnn8-dev_8.0.5.39-1+cuda11.0_amd64.deb
 sudo dpkg -i libcudnn8-samples_8.0.5.39-1+cuda11.0_amd64.deb
 ```
 
-Setup is done.
+Setup is all done.
 
-Make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1``` and train with ```--num_gpu``` option in the following step.
+In the following instructions, make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```, and train by running command with ```--num_gpu``` option.
 </blockquote>
 
 First, make sure that Python 3 is installed on Ubuntu. (If not, please install Python 3 on Ubuntu.)
@@ -64,8 +62,8 @@ sudo apt-get install -y python3-pip
 sudo -H pip3 install --upgrade pip
 ```
 
-Install X remote desktop, and start RDP service.<br>
-After this setting, restart your computer.
+Install X remote desktop components, and start RDP service.<br>
+After this settings, restart your computer.
 
 ```
 sudo apt-get update
@@ -74,11 +72,11 @@ sudo apt-get install -y xrdp
 /etc/init.d/xrdp start  # password is required
 ```
 
-Allow (Open) inbound port 3389 (default RDP port) in network settings to allow your client to connect.
+Allow (Open) inbound port 3389 (default RDP port) in network settings to enable your client to connect.
 
-> Note : When you want to join into the same game with your own Minecraft client remotely, please open Minecraft port too.
+> Note : When you want to join into the same game with your own Minecraft client remotely, please open Minecraft port 25565 too.
 
-Install and setup Java (JDK) as follows.
+Install and setup Java (JDK) as follows. (Minecraft runtime needs JDK.)
 
 ```
 sudo apt-get install -y openjdk-8-jdk
@@ -88,7 +86,7 @@ source ~/.bashrc
 
 ## 2. Install and Setup Project Malmo ##
 
-Install Malmo binaries, which is a modded Minecraft built by [Microsoft Research](https://www.microsoft.com/en-us/research/project/project-malmo/).
+Install Project Malmo binaries, which has a modded Minecraft built by [Microsoft Research](https://www.microsoft.com/en-us/research/project/project-malmo/).
 
 ```
 # install prerequisite packages
@@ -111,7 +109,7 @@ echo -e "export MALMO_XSD_PATH=$PWD/MalmoPlatform/Schemas" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Set the Malmo version in ```./MalmoPlatform/Minecraft/src/main/resources/version.properties``` file by the following command.
+Set the Malmo version in ```./MalmoPlatform/Minecraft/src/main/resources/version.properties``` file by the following command. (If it's already set, there's nothing to do.)
 
 ```
 cd MalmoPlatform/Minecraft
@@ -121,7 +119,8 @@ cd ../..
 
 ## 3. Install Ray and RLlib framework ##
 
-Install ray framework (which is used to run a trained AI agent) with dependencies as follows.
+Install Ray framework with RLlib (which is used to run the training) with dependencies as follows.<br>
+In this example, I have used TensorFlow for RLlib backend, but you can also use PyTorch.
 
 ```
 pip3 install tensorflow==2.4.1 ray[default]==1.6.0 ray[rllib]==1.6.0 ray[tune]==1.6.0 attrs==19.1.0 pandas
@@ -134,14 +133,14 @@ pip3 install tensorflow==2.4.1 ray[default]==1.6.0 ray[rllib]==1.6.0 ray[tune]==
 Login Ubuntu using remote desktop client.<br>
 Run the following commands **on monitor-attached shell** (such as, LXTerminal) to launch Minecraft with Project Malmo mod.
 
-For the first time to run, all dependencies (including Project Malmo mod) are built and installed in Minecraft. Hence it will take a while to start for the first time. (Please be patient to wait.)
+For the first time to run, all dependencies (including Project Malmo mod) are built and installed, and it will then take a while to start. (Please be patient to wait.)
 
 ```
 cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below. (See below if compilation fails.)
+> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below.
 
 ## 5. Train an agent (Deep Reinforcement Learning) ##
 
@@ -155,22 +154,22 @@ git clone https://github.com/tsmatz/minecraft-rl-example
 cd minecraft-rl-example
 ```
 
-Run the training script (train.py) as follows.<br>
-Note that this command is not needed to be run on the monitor attached shell. (This process will connect to the running Malmo instance with port 9000.)
+Run the training script (```train.py```) as follows.<br>
+Note that this command is not needed to be run on the monitor attached shell. (This process will connect to Malmo instance running with a monitor and port 9000.)
 
 ```
 python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 <blockquote>
-Note : When you run on GPU-utilized worker to speed up, specify --num_gpus option as follows.
+Note : When you run on GPU, specify --num_gpus option as follows.
 
 ```
 python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_gpus 1
 ```
 </blockquote>
 
-When you start above training code, you will see 84 x 84 Minecraft's screen running. This frame pixels are used by agent to learn.<br>
+When you start the training code (```train.py```), you will see the running agent's view in 84 x 84 Minecraft's screen. This frame pixels are used by agent to learn.<br>
 This frame size (84 x 84 x channel size) is supported for RLlib built-in convolutional network (ConvNet), and no custom model is then needed in this code. (Otherwise, create your own model and configure to use the custom model.)<br>
 See the source code [visionnet.py](https://github.com/ray-project/ray/blob/master/rllib/models/tf/visionnet.py) for the RLlib built-in convolutions.
 
