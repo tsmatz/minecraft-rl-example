@@ -16,7 +16,8 @@ Now let's start to set up your Ubuntu environment.
 
 <blockquote>
 Note : I have run and trained the agent in GPU utilized VM (instance).<br>
-When you run on NVIDIA GPU-utilized machine to speed up, please setup GPU drivers and libraries as follows.<br>
+When you run on NVIDIA GPU-utilized machine to speed up, please setup GPU drivers and libraries as follows.
+
 I note that you should install correct version of drivers and libraries. (In this settings, we'll use CUDA version 11.0 and cuDNN versioin 8.0, since we will use TensorFlow 2.4.1. See https://www.tensorflow.org/install/source#gpu for details about compatible drivers in TensorFlow.)
 
 For preparation, install ```gcc``` and ```make``` tools.
