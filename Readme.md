@@ -163,7 +163,7 @@ python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 <blockquote>
-Note : When you run on GPU, specify ```--num_gpus``` option as follows.
+Note : When you run on GPU, specify --num_gpus option as follows.
 
 ```
 python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_gpus 1
