@@ -172,7 +172,7 @@ python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_g
 
 When you start above training code, you will see 84 x 84 Minecraft's screen running. This frame pixels are used by agent to learn.<br>
 This frame size (84 x 84 x channel size) is supported for RLlib built-in convolutional network (ConvNet), and no custom model is then needed in this code. (Otherwise, create your own model and configure to use the custom model.)<br>
-See the source code ([visionnet.py](https://github.com/ray-project/ray/blob/master/rllib/models/tf/visionnet.py)) for the RLlib built-in convolutions.
+See the source code [visionnet.py](https://github.com/ray-project/ray/blob/master/rllib/models/tf/visionnet.py) for the RLlib built-in convolutions.
 
 This training will take a day and a half long for completion, when running on GPU.
 
