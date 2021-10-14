@@ -176,28 +176,26 @@ See the source code [visionnet.py](https://github.com/ray-project/ray/blob/maste
 
 This training will take a day and a half long for completion, when running on GPU.
 
-> Note : You can also run training on multiple workers in Ray cluster to speed up training. In this case, each workers in a cluster should be configured to use a virtual monitor, because it will run as a batch in backgroud.<br>
-> Using [Azure Machine Learning](https://tsmatz.wordpress.com/2018/11/20/azure-machine-learning-services/), you can quickly configure cluster (multiple workers) with built-in RL estimator.
+> Note : You can also run training on multiple workers in Ray cluster to speed up training. In the cluster, each workers should be configured to use a virtual monitor, because it will run as a batch in backgroud.<br>
+> See [here](https://github.com/tsmatz/minecraft-rl-on-ray-cluster) for running this example on Ray cluster.
 
 ## 6. Run pre-trained agent
 
-This repository also includes pre-trained checkpoint (```checkpoint/checkpoint-622```) and you can then check the result soon.
+This repository also includes pre-trained checkpoint (```checkpoint/checkpoint-XXX``` in this repo) and you can then check the result soon.
 
-After running Minecraft with malmo port 9000 (see above), run this pre-trained agent as follows.
+After launching Minecraft with malmo port 9000 (see above), run the following command to run the pre-trained agent.
 
 ```
 python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
-If you have your own trained checkpoint, you can also run and simulate your own agent as follows.
+If you have your own trained checkpoint, you can also run and trace your own agent as follows.
 
 ```
 python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
 ```
 
-![Simulate a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
-
-After you have learned, please proceed to the scalable distributed RL with Ray cluster. (See [here](https://github.com/tsmatz/minecraft-rl-on-ray-cluster).)
+![Trace a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
 
 ## Appendix : Trouble Shooting
 
