@@ -174,7 +174,7 @@ When you start the training code (```train.py```), you will see the running agen
 This frame size (84 x 84 x channel size) is supported for RLlib built-in convolutional network (ConvNet), and no custom model is then needed in this code. (Otherwise, create your own model and configure to use the custom model.)<br>
 See the source code [visionnet.py](https://github.com/ray-project/ray/blob/master/rllib/models/tf/visionnet.py) for the RLlib built-in convolutions.
 
-This training will take a day and a half long for completion, when running on GPU.
+This training will take around a day and a half long for completion, when running on a single GPU.
 
 > Note : You can also run training on multiple workers in Ray cluster to speed up training. In the cluster, each workers should be configured to use a virtual monitor, because it will run as a batch in backgroud.<br>
 > See [here](https://github.com/tsmatz/minecraft-rl-on-ray-cluster) for running this example on Ray cluster.
