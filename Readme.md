@@ -9,7 +9,7 @@ This Readme provides instructions for running this example.
 
 ## 1. Setup prerequisite software in Ubuntu ##
 
-In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have used Ubuntu 18.04 LTS in Microsoft Azure.)<br>
+In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have used Ubuntu Server 18.04 LTS in Microsoft Azure.)<br>
 You can also join into the same game with your own Minecraft PC client, if needed. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
 
 Now let's start to set up your Ubuntu environment.
