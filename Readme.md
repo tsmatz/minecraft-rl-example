@@ -91,7 +91,7 @@ Install Project Malmo binaries, which has a modded Minecraft built by [Microsoft
 
 ```
 # install prerequisite packages
-pip3 install gym lxml numpy pillow
+pip3 install gym==0.21.0 lxml numpy pillow
 # install malmo
 pip3 install --index-url https://test.pypi.org/simple/ malmo==0.36.0
 ```
