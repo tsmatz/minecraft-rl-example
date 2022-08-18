@@ -24,8 +24,8 @@ For preparation, install ```gcc``` and ```make``` tools.
 
 ```
 sudo apt-get update
-sudo apt install gcc
-sudo apt-get install make
+sudo apt install -y gcc
+sudo apt-get install -y make
 ```
 
 Install CUDA 11.0 by running the following command. (After installation, make sure to be installed by running ```nvidia-smi``` command.)
