@@ -100,6 +100,7 @@ Expand Malmo bootstrap files as follows.<br>
 All files will be deployed on ```./MalmoPython``` folder.
 
 ```
+sudo apt-get install -y git
 python3 -c "import malmo.minecraftbootstrap; malmo.minecraftbootstrap.download();"
 ```
 
