@@ -202,13 +202,13 @@ python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --c
 
 ![Trace a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
 
-## Appendix : Trouble Shooting
+## Appendix : Troubleshooting
 
 **Xrdp won't accept a special character for password.**
 
 Please create a new user with a simple password.
 
-**Minecraft compilation errors**
+**Errors in Minecraft compilation or run**
 
 If the download for Minecraft assets fails or cannot be found in Minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and use the successful cache as follows.
 
