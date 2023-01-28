@@ -142,7 +142,11 @@ cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-> Note : When you have any trouble to use the monitor, see "Trouble Shooting" in the appendix below.
+> Note : When you have troubles (errors) for the download in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and use successful cache as follows.<br>
+> ```mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org```<br>
+> ```sudo apt-get install zip unzip```<br>
+> ```unzip gradle_caches_minecraft.zip -d ~/.gradle/caches```<br>
+> For troubles to use the monitor, see "Trouble Shooting" in the appendix below.
 
 ## 5. Train an agent (Deep Reinforcement Learning) ##
 
@@ -206,12 +210,12 @@ Please create a new user with a simple password.
 
 **Minecraft compilation errors**
 
-If ```forgeSrc.jar``` (```forgeSrc-1.11.2-13.20.0.2228.jar```) could not be found and the error occurs in Minecraft compilation, please download and use the successful cache [malmo-gradle-caches.zip](https://1drv.ms/u/s!AuopXnMb-Aqcgc9v58e-4x8hhQCFDg?e=EZtHP9).
+If the download for Minecraft assets fails or cannot be found in Minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and use the successful cache as follows.
 
 ```
-mv ~/.gradle/caches ~/.gradle/caches-org
+mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org
 sudo apt-get install zip unzip
-unzip malmo-gradle-caches.zip -d ~/.gradle/caches
+unzip gradle_caches_minecraft.zip -d ~/.gradle/caches
 ```
 
 **Error for connecting to Minecraft client**
