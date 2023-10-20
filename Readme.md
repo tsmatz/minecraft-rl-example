@@ -238,7 +238,6 @@ cd MalmoPlatform/Minecraft
 
 > Note : When you have troubles (errors) for downloading resources in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and run the following command to use successful gradle cache.<br>
 > ```mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org```<br>
-> ```sudo apt-get install zip unzip```<br>
 > ```unzip gradle_caches_minecraft.zip -d ~/.gradle/caches```<br>
 > For troubles to use the monitor, see "Trouble Shooting" in the appendix below.
 
