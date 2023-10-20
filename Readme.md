@@ -315,7 +315,6 @@ If the download for Minecraft assets fails or cannot be found in Minecraft compi
 
 ```
 mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org
-sudo apt-get install zip unzip
 unzip gradle_caches_minecraft.zip -d ~/.gradle/caches
 ```
 
