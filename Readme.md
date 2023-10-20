@@ -9,7 +9,7 @@ This Readme provides instructions for running this example.
 
 ## 1. Setup prerequisite software in Ubuntu ##
 
-In this example, I assume Ubuntu 18.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have used Ubuntu Server 18.04 LTS in Microsoft Azure.)<br>
+In this example, I assume Ubuntu 20.04 with real monitor (which is used to show Minecraft UI) to run the training. (I have used **Ubuntu Server 20.04 LTS** in Microsoft Azure.)<br>
 You can also join into the same game with your own Minecraft PC client, if needed. (See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/) for details.)
 
 Now let's start to set up your Ubuntu environment.
@@ -24,8 +24,10 @@ For preparation, install ```gcc``` and ```make``` tools.
 
 ```
 sudo apt-get update
-sudo apt install -y gcc
-sudo apt-get install -y make
+sudo apt-get install build-essential
+# # or install individual packages as follows
+# sudo apt-get install -y gcc
+# sudo apt-get install -y make
 ```
 
 Install CUDA 11.0 by running the following command. (After installation, make sure to be installed by running ```nvidia-smi``` command.)
@@ -49,91 +51,183 @@ Setup is all done.
 In the following instructions, make sure to install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```, and train by running command with ```--num_gpu``` option.
 </blockquote>
 
-First, make sure that Python 3 is installed on Ubuntu. (If not, please install Python 3 on Ubuntu.)
+## 2. Download and build Malmo ##
+
+To install Malmo, you can use pre-built binary or build Malmo from source code.<br>
+Here we download and build Malmo in Ubuntu 20.04.
+
+First install **Python 3.6**, because Malmo is compatible with Python version 3.6.
+
+```
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.6
+```
+
+By running the following command, set Python 3.6 as default version for ```python3``` command.
+
+```
+# add python3.6 in update-alternatives
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 1
+# configure python3.6 as default
+sudo update-alternatives --config python3
+```
+
+> Note : This is needed, because Malmo's compilation runs ```python3``` command in cmake in order to check version for finding boost python module. (See ```CMakeLists.txt``` file in Malmo's source files.)
+
+Check whether Python 3.6 is used in ```python3``` command.
 
 ```
 python3 -V
 ```
 
-Install and upgrade pip3.
+Next, install and set up the required components for Malmo as follows.
+
+```
+# install required components
+sudo apt-get install \
+  build-essential \
+  libpython3.6-dev \
+  openjdk-8-jdk \
+  swig \
+  doxygen \
+  xsltproc \
+  ffmpeg \
+  python-tk \
+  python-imaging-tk \
+  zlib1g-dev
+
+# set environment for Java
+echo -e "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
+source ~/.bashrc
+
+# update certificates
+sudo update-ca-certificates -f
+```
+
+> Note : Malmo uses the modded Minecraft and it then depends on Java SDK.
+
+Download and build cmake as follows.
+
+```
+mkdir ~/cmake
+cd ~/cmake
+wget https://cmake.org/files/v3.11/cmake-3.11.0.tar.gz
+tar xvf cmake-3.11.0.tar.gz
+cd cmake-3.11.0
+./bootstrap
+make -j4
+sudo make install
+cd
+```
+
+Download and build Boost as follows.
+
+```
+mkdir ~/boost
+cd ~/boost
+wget http://sourceforge.net/projects/boost/files/boost/1.66.0/boost_1_66_0.tar.gz
+tar xvf boost_1_66_0.tar.gz
+cd boost_1_66_0
+./bootstrap.sh --with-python=/usr/bin/python3.6 --prefix=.
+./b2 link=static cxxflags=-fPIC install
+cd
+```
+
+Now it's all ready for installing Malmo.<br>
+Download and build Malmo as follows.
+
+The generated file ```./install/Python_Examples/MalmoPython.so``` is then the entry point for Python package.
+
+```
+git clone https://github.com/Microsoft/malmo.git ~/MalmoPlatform
+wget https://raw.githubusercontent.com/bitfehler/xs3p/1b71310dd1e8b9e4087cf6120856c5f701bd336b/xs3p.xsl -P ~/MalmoPlatform/Schemas
+echo -e "export MALMO_XSD_PATH=$PWD/MalmoPlatform/Schemas" >> ~/.bashrc
+source ~/.bashrc
+cd ~/MalmoPlatform
+mkdir build
+cd build
+cmake -DBoost_INCLUDE_DIR=/home/$USER/boost/boost_1_66_0/include -DBOOST_PYTHON_NAME=python3 -DCMAKE_BUILD_TYPE=Release ..
+make install
+cd
+```
+
+After Malmo compilation has completed, configure Python 3.8 as default for python3, because packages in Ubuntu 20.04 depends on Python version 3.8.
+
+```
+# add python3.8 in update-alternatives
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 2
+# configure python3.8 as default
+sudo update-alternatives --config python3
+```
+
+Check whether Python version 3.8 is set as default in python3.
+
+```
+python3 -V
+```
+
+> Note : See [here](https://github.com/microsoft/malmo/blob/master/doc/build_linux.md) for details about building Malmo.
+
+## 3. Install required packages ##
+
+Install required packages with dependencies (such as, TensorFlow, Ray framework with RLlib, etc) as follows.<br>
+In this example, I have used TensorFlow for RLlib backend, but you can also use PyTorch for running RLlib.
+
+First set up PIP in python3.6.
 
 ```
 sudo apt-get update
 sudo apt-get install -y python3-pip
 sudo -H pip3 install --upgrade pip
+sudo apt-get install python3.6-distutils
 ```
 
-Install X remote desktop components, and start RDP service.<br>
-After this settings, restart your computer.
+Now let's install python packages in python 3.6.
 
 ```
-sudo apt-get update
-sudo apt-get install -y lxde
-sudo apt-get install -y xrdp
-/etc/init.d/xrdp start  # password is required
-```
-
-Allow (Open) inbound port 3389 (default RDP port) in network settings to enable your client to connect.
-
-> Note : When you want to join into the same game with your own Minecraft client remotely, please open Minecraft port 25565 too.
-
-Install and setup Java (JDK) as follows. (Minecraft runtime needs JDK.)
-
-```
-sudo apt-get install -y openjdk-8-jdk
-echo -e "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64" >> ~/.bashrc
-source ~/.bashrc
-```
-
-## 2. Install and Setup Project Malmo ##
-
-Install Project Malmo binaries, which has a modded Minecraft built by [Microsoft Research](https://www.microsoft.com/en-us/research/project/project-malmo/).
-
-```
-# install prerequisite packages
-pip3 install gym==0.21.0 lxml numpy pillow
-# install malmo
-pip3 install --index-url https://test.pypi.org/simple/ malmo==0.36.0
-```
-
-Expand Malmo bootstrap files as follows.<br>
-All files will be deployed on ```./MalmoPython``` folder.
-
-```
-sudo apt-get install -y git
-python3 -c "import malmo.minecraftbootstrap; malmo.minecraftbootstrap.download();"
-```
-
-Set ```MALMO_XSD_PATH``` environment variable as follows.
-
-```
-echo -e "export MALMO_XSD_PATH=$PWD/MalmoPlatform/Schemas" >> ~/.bashrc
-source ~/.bashrc
-```
-
-Set the Malmo version in ```./MalmoPlatform/Minecraft/src/main/resources/version.properties``` file by the following command. (If it's already set, there's nothing to do.)
-
-```
-cd MalmoPlatform/Minecraft
-(echo -n "malmomod.version=" && cat ../VERSION) > ./src/main/resources/version.properties
-cd ../..
-```
-
-## 3. Install Ray and RLlib framework ##
-
-Install Ray framework with RLlib (which is used to run the training) with dependencies as follows.<br>
-In this example, I have used TensorFlow for RLlib backend, but you can also use PyTorch.
-
-```
-pip3 install tensorflow==2.4.1 ray[default]==1.6.0 ray[rllib]==1.6.0 ray[tune]==1.6.0 attrs==19.1.0 pandas
+python3.6 -m pip install \
+  gym==0.21.0 \
+  lxml \
+  numpy \
+  pillow \
+  tensorflow==2.4.1 \
+  gpustat==0.6.0 \
+  ray[default]==1.6.0 \
+  dm-tree==0.1.7 \
+  ray[rllib]==1.6.0 \
+  ray[tune]==1.6.0 \
+  attrs==19.1.0 \
+  pandas
 ```
 
 > Note : When you run on GPU, install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```.
 
-## 4. Run Minecraft with Project Malmo ##
+## 4. Configure desktop environment ##
+
+Malmo is built on the modded Minecraft.<br>
+It then needs monitor-attached environment, and here I configure X remote desktop environment and RDP service as follows.
+
+```
+sudo apt-get update
+# while installation, select gdm3 for default display manager
+sudo apt-get -y install xfce4
+sudo apt-get -y install xrdp
+sudo systemctl enable xrdp
+echo xfce4-session >~/.xsession
+sudo service xrdp restart
+```
+
+> Note : Run ```echo xfce4-session >~/.xsession``` for all users who runs the program.
+
+Allow (Open) inbound port 3389 (which is default RDP port's number) in network settings to enable your client to connect to your server.
+
+> Note : When you want to join into the same game with your own Minecraft client remotely, please open Minecraft port 25565 too.
+
+## 5. Run Project Malmo with Minecraft ##
 
 Login Ubuntu using remote desktop client.<br>
-Run the following commands **on monitor-attached shell** (such as, LXTerminal) to launch Minecraft with Project Malmo mod.
+And run the following commands **on monitor-attached shell** (such as, LXTerminal) to launch Minecraft with Project Malmo's mod.
 
 For the first time to run, all dependencies (including Project Malmo mod) are built and installed, and it will then take a while to start. (Please be patient to wait.)
 
@@ -142,16 +236,18 @@ cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-> Note : When you have troubles (errors) for the download in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and use successful cache as follows.<br>
+> Note : When you have troubles (errors) for downloading resources in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and run the following command to use successful gradle cache.<br>
 > ```mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org```<br>
 > ```sudo apt-get install zip unzip```<br>
 > ```unzip gradle_caches_minecraft.zip -d ~/.gradle/caches```<br>
 > For troubles to use the monitor, see "Trouble Shooting" in the appendix below.
 
-## 5. Train an agent (Deep Reinforcement Learning) ##
+Keep running Minecraft with Malmo.
+
+## 6. Train an agent (Deep Reinforcement Learning) ##
 
 Now let's start training.<br>
-Before starting, make sure that Minecraft is running with malmo port 9000. (See above.)
+Before starting, make sure that Minecraft with Malmo is running and listening port 9000. (See above.)
 
 First, clone this repository.
 
@@ -160,18 +256,24 @@ git clone https://github.com/tsmatz/minecraft-rl-example
 cd minecraft-rl-example
 ```
 
+Copy file ```~/MalmoPlatform/build/install/Python_Examples/MalmoPython.so``` in current folder as follows.
+
+```
+cp ~/MalmoPlatform/build/install/Python_Examples/MalmoPython.so .
+```
+
 Run the training script (```train.py```) as follows.<br>
 Note that this command is not needed to be run on the monitor attached shell. (This process will connect to Malmo instance running with a monitor and port 9000.)
 
 ```
-python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
+python3.6 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 <blockquote>
 Note : When you run on GPU, specify --num_gpus option as follows.
 
 ```
-python3 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_gpus 1
+python3.6 train.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --num_gpus 1
 ```
 </blockquote>
 
@@ -184,20 +286,20 @@ This training will take around a day and a half long for completion, when runnin
 > Note : You can also run training on multiple workers in Ray cluster to speed up training. In the cluster, each workers should be configured to use a virtual monitor, because it will run as a batch in backgroud.<br>
 > See [here](https://github.com/tsmatz/minecraft-rl-on-ray-cluster) for running this example on Ray cluster.
 
-## 6. Run pre-trained agent
+## 7. Run pre-trained agent
 
 This repository also includes pre-trained checkpoint (```checkpoint/checkpoint-XXX``` in this repo) and you can then check the result soon.
 
 After launching Minecraft with malmo port 9000 (see above), run the following command to run the pre-trained agent.
 
 ```
-python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
+python3.6 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
 If you have your own trained checkpoint, you can also run and trace your own agent as follows.
 
 ```
-python3 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
+python3.6 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml --checkpoint_file YOUR_OWN_CHECKPOINT_FILE_PATH
 ```
 
 ![Trace a trained agent](https://tsmatz.files.wordpress.com/2020/07/20200717_rollout_capture.gif)
@@ -277,5 +379,5 @@ sudo apt-get install xtightvncviewer
 DISPLAY=:10 /usr/bin/vncviewer localhost:5902 &
 # run program
 export DISPLAY=:99
-python3 train.py
+python3.6 train.py
 ```

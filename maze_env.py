@@ -1,5 +1,5 @@
 import gym
-import malmo.MalmoPython as MalmoPython
+import MalmoPython
 import random
 import time
 import numpy as np
