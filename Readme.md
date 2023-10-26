@@ -195,10 +195,12 @@ python3.6 -m pip install \
   gpustat==0.6.0 \
   ray[default]==1.6.0 \
   dm-tree==0.1.7 \
-  ray[rllib]==1.6.0 \
-  ray[tune]==1.6.0 \
   attrs==19.1.0 \
   pandas
+
+python3.6 -m pip install \
+  ray[rllib]==1.6.0 \
+  ray[tune]==1.6.0
 ```
 
 > Note : When you run on GPU, install ```tensorflow-gpu==2.4.1``` instead of ```tensorflow==2.4.1```.
