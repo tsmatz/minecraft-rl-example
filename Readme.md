@@ -183,7 +183,9 @@ sudo -H pip3 install --upgrade pip
 sudo apt-get install python3.6-distutils
 ```
 
-Now let's install python packages in python 3.6.
+Now let's install python packages in python 3.6 as follows.<br>
+
+Ray dashboard 1.6 depends on ```aiohttp==3.7.4``` (```aiohttp>=3.8``` has a breaking change), and then I have explicitly installed ```aiohttp==3.7.4```, ```redis==3.5.3```, and ```prometheus-client==0.8.0``` to use Ray dashboard.
 
 ```
 python3.6 -m pip install \
@@ -193,6 +195,9 @@ python3.6 -m pip install \
   pillow \
   tensorflow==2.4.1 \
   gpustat==0.6.0 \
+  aiohttp==3.7.4 \
+  prometheus-client==0.8.0 \
+  redis==3.5.3 \
   ray[default]==1.6.0 \
   dm-tree==0.1.7 \
   attrs==19.1.0 \
