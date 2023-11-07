@@ -56,7 +56,7 @@ In the following instructions, make sure to install ```tensorflow-gpu==2.4.1``` 
 To install Malmo, you can use pre-built binary or build Malmo from source code.<br>
 Here we download source code and build Malmo in Ubuntu 20.04.
 
-First install **Python 3.6**, because Malmo is compatible with Python version 3.6.
+First install **Python 3.6**, because I have tried this example with this version. (You can also build and run Malmo on Python 3.8.)
 
 ```
 sudo add-apt-repository ppa:deadsnakes/ppa
