@@ -56,7 +56,7 @@ In the following instructions, make sure to install ```tensorflow-gpu==2.4.1``` 
 To install Malmo, you can use pre-built binary or build Malmo from source code.<br>
 Here we download source code and build Malmo in Ubuntu 20.04.
 
-First install **Python 3.6**, because I have tried this example with this version. (You can also build and run Malmo on Python 3.8.)
+First install **Python 3.6**, because I have trained checkpoint in this example with this version. (You can also build and run Malmo on Python 3.8. See [here](https://tsmatz.wordpress.com/2020/07/09/minerl-and-malmo-reinforcement-learning-in-minecraft/).)
 
 ```
 sudo add-apt-repository ppa:deadsnakes/ppa
@@ -152,6 +152,8 @@ make install
 cd
 ```
 
+> Note : It might show errors for downloading assets from ```http://resources.download.minecraft.net/``` (not ```https://```), but you can ignore.
+
 After Malmo compilation has completed, configure Python 3.8 as default for python3, because packages in Ubuntu 20.04 depends on Python version 3.8.
 
 ```
@@ -243,7 +245,8 @@ cd MalmoPlatform/Minecraft
 ./launchClient.sh -port 9000
 ```
 
-> Note : When you have troubles (errors) for downloading resources in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and run the following command to use successful gradle cache.<br>
+> Note : It might show errors for downloading assets from ```http://resources.download.minecraft.net/``` (not ```https://```), but you can ignore.<br>
+> When you have troubles (errors) for downloading resources in minecraft compilation, please download [here](https://1drv.ms/u/s!AuopXnMb-AqcgdZkjmtSVg3VQL5TEQ?e=w4M4r7) and run the following command to use successful gradle cache.<br>
 > ```mv ~/.gradle/caches/minecraft ~/.gradle/caches/minecraft-org```<br>
 > ```unzip gradle_caches_minecraft.zip -d ~/.gradle/caches```<br>
 > For troubles to use the monitor, see "Trouble Shooting" in the appendix below.
