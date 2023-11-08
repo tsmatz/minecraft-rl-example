@@ -305,6 +305,8 @@ After launching Minecraft with malmo port 9000 (see above), run the following co
 python3.6 run_agent.py /YOUR_HOME_DIR/minecraft-rl-example/lava_maze_malmo.xml
 ```
 
+> Note : To load this checkpoint, you should run on **Python 3.6**, because this checkpoint is created on this version.
+
 If you have your own trained checkpoint, you can also run and trace your own agent as follows.
 
 ```
